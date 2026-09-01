@@ -40,7 +40,7 @@ then updates the same XMB entry instead of creating another copy.
 
 ## Requirements and limits
 
-- Start the installer with **wLaunchELF v4.70_R3Z**.
+- Start the installer with **wLaunchELF v4.76_R3Z**.
 - Up to 16 application folders are scanned in one run.
 - Each application uses a dedicated 128 MiB PFS partition.
 - ELF files must be 32-bit little-endian MIPS executables.
