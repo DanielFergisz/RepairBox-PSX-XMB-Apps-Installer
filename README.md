@@ -1,4 +1,4 @@
-# RepairBox.pl PSX XMB Dynamic App Installer v1.0
+# RepairBox.pl PSX XMB App Installer v1.0
 
 This installer adds PS2 ELF applications to the Games section of the XMB on a
 Sony PSX DESR. It works with PSX1 and PSX2 systems and detects the installed
@@ -51,7 +51,7 @@ then updates the same XMB entry instead of creating another copy.
 ## Installing and updating
 
 1. Copy the installer ELF and the complete `PSX_XMB_Apps` folder to USB.
-2. Run the installer from wLaunchELF v4.70_R3Z.
+2. Run the installer from wLaunchELF v4.76_R3Z.
 3. Check the detected revision and package list.
 4. Hold `L1 + R1` and press `X`.
 5. Wait for installation and verification to finish.
