@@ -1,0 +1,6 @@
+# Keep id unchanged when publishing an update.
+id=my-application
+title=My Application
+subtitle=Homebrew Utility
+elf=MyApp.ELF
+
