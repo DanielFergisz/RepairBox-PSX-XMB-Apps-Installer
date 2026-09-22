@@ -70,5 +70,3 @@ Keep an application's `id` unchanged when updating it. Running the installer aga
 ### Maintenance uninstall
 
 Holding `L1 + R1 + L2 + R2` and pressing `TRIANGLE` opens a separate confirmation for removing **all** structurally verified manually installed XMB application partitions. This is not a single-app uninstall and should not be used for normal updates.
-
-Source code, third-party notices, and SHA-256 checksums for both ELF files are included in the GitHub package.
