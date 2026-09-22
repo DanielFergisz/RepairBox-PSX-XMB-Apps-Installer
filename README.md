@@ -26,7 +26,7 @@ The ready-to-use ZIP contains the USB/MX4SIO build under a shorter filename. Use
 ## Installation
 
 1. Extract the ready-to-use package to a USB drive, or put your chosen installer ELF beside a `PSX_XMB_Apps` folder on the same medium.
-2. Launch the installer with wLaunchELF v4.70_R3Z or an equivalent PSX-compatible build. Check the detected revision and application list.
+2. Launch the installer with wLaunchELF v4.78_R3Z or an equivalent PSX-compatible build. Check the detected revision and application list.
 3. Hold `L1 + R1` and press `X`. Wait for copying and verification to finish.
 4. Fully power off the PSX, disconnect AC power, then reconnect and boot XMB.
 
