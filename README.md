@@ -118,5 +118,3 @@ the project root. Prebuilt binaries in `release/` are accompanied by
 
 The application-installation code is based on RepairBox HDD + Apps v1.3. The
 standalone entry point and media-specific build profiles are new in v1.1.
-See [third-party notices](THIRD_PARTY_NOTICES.md) for bundled components and
-their licenses. No Sony system files or application payloads are included.
