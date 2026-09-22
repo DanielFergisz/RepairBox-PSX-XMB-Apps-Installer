@@ -1,20 +1,37 @@
-# RepairBox.pl PSX XMB App Installer v1.0
+# RepairBox.pl PSX XMB App Installer v1.1
 
-This installer adds PS2 ELF applications to the Games section of the XMB on a
-Sony PSX DESR. It works with PSX1 and PSX2 systems and detects the installed
-revision from `__system/version.txt`.
+This standalone installer adds PS2 ELF applications to the Games section of
+the XMB on Sony PSX DESR systems. It supports PSX1 and PSX2 and detects the
+installed revision from `__system/version.txt`.
 
-It is made for a PSX with a working system that has already completed its first
-XMB boot. It does not format or repartition the HDD.
+Use it only on a PSX with a working HDD system that has completed its first
+XMB boot. It **does not** install, format, repartition, or repair the system.
+Back up important data before modifying HDD application partitions.
 
-## USB layout
+## Choose the correct ELF
 
-Put the installer ELF next to a folder named `PSX_XMB_Apps`. Each application
-gets its own folder:
+Two separate builds are included in [`release/`](release/):
+
+| Launch medium | Installer ELF |
+| --- | --- |
+| USB or MX4SIO | `RepairBox.pl-PSX-XMB-Dynamic-App-Installer-v1.1-USB-MX4SIO.elf` |
+| MMCE (slot 1 or 2) | `RepairBox.pl-PSX-XMB-Dynamic-App-Installer-v1.1-MMCE.elf` |
+
+Do not launch the MMCE build from USB, or the USB/MX4SIO build from MMCE.
+Launch with **wLaunchELF v4.70_R3Z** or the equivalent environment used for
+the RepairBox HDD + Apps v1.3 installer.
+
+## Application package layout
+
+Put the chosen ELF and `PSX_XMB_Apps` together on the same medium. They may
+be at its root or together in an ordinary subdirectory. The installer checks
+the ELF's location and its ancestors, then performs a bounded search up to
+two directory levels when necessary. Avoid multiple `PSX_XMB_Apps` folders on
+one medium: an ambiguous match will not be selected.
 
 ```text
-mass:/
-  RepairBox.pl-PSX-XMB-Dynamic-App-Installer-v1.0.elf
+RepairBox/
+  RepairBox.pl-PSX-XMB-Dynamic-App-Installer-v1.1-USB-MX4SIO.elf
   PSX_XMB_Apps/
     My Application/
       MyApp.ELF
@@ -22,11 +39,9 @@ mass:/
       app.ini         optional
 ```
 
-For a simple package, one folder with one ELF is enough. The folder name is
-used as the XMB title and stable application ID.
-
-Use `app.ini` when you want a different title, a fixed ID, or need to choose
-one ELF from a folder:
+For a simple package, use one folder with exactly one ELF. The folder name
+becomes the default XMB title and stable application ID. Use `app.ini` to set
+them explicitly or select an ELF when the folder contains more than one:
 
 ```ini
 id=my-application
@@ -36,58 +51,72 @@ elf=MyApp.ELF
 ```
 
 Keep `id` unchanged when publishing an update. Running the installer again
-then updates the same XMB entry instead of creating another copy.
+then updates the same XMB entry. Removing an application folder from the
+source medium does **not** uninstall its XMB entry.
 
 ## Requirements and limits
 
-- Start the installer with **wLaunchELF v4.76_R3Z**.
 - Up to 16 application folders are scanned in one run.
-- Each application uses a dedicated 128 MiB PFS partition.
-- ELF files must be 32-bit little-endian MIPS executables.
-- The maximum ELF size is 2,025,312 bytes.
-- `cover.png` may be 16x16 through 256x256 and up to 1 MiB; 72x112 works well.
-- Invalid packages are marked as `ERROR` and skipped.
+- Each application uses a dedicated 128 MiB PFS partition on the PSX HDD.
+- The input must be a 32-bit little-endian MIPS ELF, at most **2,025,312
+  bytes**. This is the payload limit imposed by the generated KELF.
+- Optional `cover.png` must be 16×16 through 256×256 pixels and no larger
+  than 1 MiB. A 72×112 cover works well.
+- Invalid packages are marked `ERROR` and skipped.
+- This release displays status on the console; it does not create a
+  diagnostic report file.
 
-## Installing and updating
+## Install or update
 
-1. Copy the installer ELF and the complete `PSX_XMB_Apps` folder to USB.
-2. Run the installer from wLaunchELF v4.76_R3Z.
-3. Check the detected revision and package list.
-4. Hold `L1 + R1` and press `X`.
-5. Wait for installation and verification to finish.
-6. Fully power off the PSX, disconnect AC power, reconnect it and boot XMB.
+1. Copy the chosen installer ELF and your complete `PSX_XMB_Apps` folder to
+   the same USB or MMCE medium.
+2. Run the ELF in wLaunchELF and check the detected PSX revision and package
+   list.
+3. Hold `L1 + R1` and press `X` to install the valid packages. `TRIANGLE`
+   rescans the source; `O` exits.
+4. Wait for installation and verification to finish.
+5. Fully power off the PSX, disconnect AC power, reconnect it, and boot XMB.
 
-Removing an application folder from USB does not uninstall its XMB entry.
+The order of entries in XMB is not controlled by the order of source folders.
 
-## Maintenance uninstall
+### Maintenance uninstall
 
-The installer can remove manually installed application partitions that pass
-its structural safety checks. From the package list, hold
-`L1 + R1 + L2 + R2` and press `TRIANGLE`, then follow the confirmation shown on
-screen. This removes every verified manual application found by the scan, so
-use it carefully.
+From the package list, hold `L1 + R1 + L2 + R2` and press `TRIANGLE` to enter
+the separate maintenance confirmation. This removes **every** manually added
+application partition that passes the installer's structural safety checks;
+it is not a single-app uninstall. The operation is not automatically
+reversible. Do not use it for normal updates.
 
-## Checking packages on a PC
+## Check packages on a PC
 
-Python 3 can validate the folder layout before copying it to USB:
+Python 3 can validate package layout and the ELF size before copying to the
+console:
 
 ```sh
-python tools/validate_usb_packages.py PSX_XMB_Apps
+python3 tools/validate_usb_packages.py PSX_XMB_Apps
 ```
 
-## Building
+The PC check is a preflight aid, not a substitute for the installer's checks
+or a successful console test.
 
-A working PS2DEV/PS2SDK environment is required:
+## Build from source
+
+The project requires a working PS2DEV/PS2SDK v2.0.0 environment with the
+PS2SDK ports headers and Python 3. For example:
 
 ```sh
 export PS2DEV=/path/to/ps2dev
 export PS2SDK="$PS2DEV/ps2sdk"
 export PATH="$PS2DEV/bin:$PS2DEV/ee/bin:$PS2DEV/iop/bin:$PS2SDK/bin:$PATH"
-make clean all
+make all
 ```
 
-You can also run `sh tools/build_local.sh` after setting `PS2DEV` and `PS2SDK`.
-The output is `RepairBox.pl-PSX-XMB-Dynamic-App-Installer-v1.0.elf`. A verified
-prebuilt ELF and its SHA-256 manifest are included in `release/`.
+`make all` runs the host checks, builds both profiles, and checks that their
+embedded drivers are separated correctly. The two generated ELFs appear in
+the project root. Prebuilt binaries in `release/` are accompanied by
+`release/SHA256SUMS.txt`; verify them before distributing or installing.
 
-Version 1.0 does not create diagnostic reports.
+The application-installation code is based on RepairBox HDD + Apps v1.3. The
+standalone entry point and media-specific build profiles are new in v1.1.
+See [third-party notices](THIRD_PARTY_NOTICES.md) for bundled components and
+their licenses. No Sony system files or application payloads are included.

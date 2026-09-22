@@ -66,7 +66,7 @@ def read_ini(path: Path) -> dict[str, str]:
 def validate_elf(path: Path) -> None:
     size = path.stat().st_size
     if size > 2_025_312:
-        raise ValueError("ELF is larger than 2,025,312 bytes")
+        raise ValueError("ELF is larger than the installer limit (2,025,312 bytes)")
     header = path.read_bytes()[:20]
     if (len(header) != 20 or header[:4] != b"\x7fELF" or
             header[4:7] != b"\x01\x01\x01" or header[18:20] != b"\x08\x00"):

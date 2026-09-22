@@ -1,1 +1,2 @@
-c4beba902df67ecece9e23d1ffc5ac439ee2d7ced1257caa69321f9897748dae  RepairBox.pl-PSX-XMB-Dynamic-App-Installer-v1.0.elf
+dba509b7b347e96c0dc02f3ffd6945d4dcd013d559eb769b73634d4a31c61f86  RepairBox.pl-PSX-XMB-Dynamic-App-Installer-v1.1-MMCE.elf
+f01ed251307feffbbd2ee48172c6e329616b27805443bb8bb4f01e0cd43bfae2  RepairBox.pl-PSX-XMB-Dynamic-App-Installer-v1.1-USB-MX4SIO.elf
